@@ -1,0 +1,56 @@
+<script type="text/javascript">
+
+function myFileBrowser (field_name, url, type, win) {
+
+    var cmsURL = '/imagebrowser/browse';
+
+    tinyMCE.activeEditor.windowManager.open({
+        file : cmsURL,
+        title : 'My File Browser',
+        width : 760,  // Your dimensions may differ - toy around with them!
+        height : 400,
+        resizable : "yes",
+        inline : "yes",  // This parameter only has an effect if you use the inlinepopups plugin!
+        close_previous : "no",
+    }, {
+        window : win,
+        input : field_name
+    });
+    return false;
+}
+
+function mySubmit() {
+    //call this function only after page has loaded
+    //otherwise tinyMCEPopup.close will close the
+    //"Insert/Edit Image" or "Insert/Edit Link" window instead
+
+    var URL = document.my_form.my_field.value;
+    var win = tinyMCE.getWindowArg("window");
+
+    // insert information now
+     win.document.getElementById(tinyMCE.getWindowArg("input")).value = URL;
+
+    // for image browsers: update image dimensions
+    if (win.getImageData) win.getImageData();
+
+    // close popup window
+    tinyMCEPopup.close();
+}
+
+
+tinyMCE.init({
+  mode: "textareas",
+  theme: "advanced",
+  formats : {
+      italic : {inline : 'span', 'classes' : 'italic'},
+      underline : {inline : 'span', 'classes' : 'underline', exact : true},
+  },
+  theme_advanced_blockformats : "p,h3,h4,h5,h6",
+  theme_advanced_disable: "styleselect,help",
+  width: "800",
+  height: "800",
+  file_browser_callback : 'myFileBrowser',
+  plugins : "inlinepopups",
+  dialog_type : "modal",
+});
+</script>
