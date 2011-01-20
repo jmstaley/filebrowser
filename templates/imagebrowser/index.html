@@ -1,0 +1,43 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}{{ type|capfirst }} Browser{% endblock %}
+
+{% block extrahead %}
+  <script type="text/javascript" src="/static/js/tiny_mce/tiny_mce_popup.js"></script>
+  <script type="text/javascript">
+    var FileBrowserDialogue = {
+      FileSubmit : function (url) {
+          var win = tinyMCEPopup.getWindowArg("window");
+                  
+          // insert information now
+          win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = url;
+          tinyMCEPopup.close();
+      }
+    }
+    tinyMCEPopup.onInit.add(FileBrowserDialogue);
+  </script>
+{% endblock %}
+
+{% block bodyclass %}change-form{% endblock %}
+
+{% block content %}
+  <div id="content-main">
+    <form id="file_select_form">
+      <fieldset>
+        {% for name, title in files %}
+          <div class="form-row">
+            {% if type == "image" %}
+              <p>{{ title }}</p>
+              <a href="#" onclick="FileBrowserDialogue.FileSubmit('/{{ name }}')"><img src="/{{ name }}"></a>
+            {% else %}
+              <a href="#" onclick="FileBrowserDialogue.FileSubmit('/{{ name }}')">{{ title }}</a>
+            {% endif %}
+          {{ file }}
+        {% endfor %}
+      </fieldset>
+      <div class="submit-row">
+        <input type="button" value="Cancel" onclick="tinyMCEPopup.close()" />
+      </div>
+    </form>
+  </div>
+{% endblock %}

@@ -1,23 +1,29 @@
 import os
 from django.conf import settings
 from django.shortcuts import render_to_response
+from django.db.models import get_model
 
-FILE_EXTENTIONS = ('jpg', 'gif', 'png')
-
-def browse(request):
+def browse(request, file_type):
+    image_model, appname = settings.BROWSER_IMAGE
+    file_model, appname = settings.BROWSER_FILE
     files_info = []
-    path = os.path.join(settings.MEDIA_ROOT, settings.IMAGEBROWSER_DIR)
-    if os.path.isdir(path):
-        files = os.listdir(path)
 
-        for file_name in files:
-            name, ext = file_name.split('.')
-            if ext in FILE_EXTENTIONS:
-                files_info.append((os.path.join('/', 
-                                                settings.IMAGEBROWSER_DIR, 
-                                                file_name), 
-                                   file_name))
+    if file_type == 'image':
+        model_name, appname = settings.BROWSER_IMAGE
+        fieldname = 'image'
+    elif file_type == 'file':
+        model_name, appname = settings.BROWSER_FILE
+        fieldname = 'document'
+
+    model = get_model(appname, model_name)
+
+    objs = model.objects.all()
+    for obj in objs:
+        field = getattr(obj, fieldname)
+        files_info.append((field.name, 
+                           obj.title))
 
     return render_to_response('imagebrowser/index.html', 
                               {'files': files_info,
-                               'title': 'Image Browser'})
+                               'type': file_type,
+                               'title': '%s Browser' % file_type.capitalize()})
