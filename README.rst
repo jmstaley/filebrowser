@@ -1,5 +1,6 @@
 Filebrowser
 ============
+
 Simple file browser for tinyMCE in django.
 
 Uses the database models to return images and files that have been 
@@ -7,7 +8,7 @@ uploaded through django.  Displays them in a window for tinyMCE to
 use.
 
 Install
-=======
+-------
 TODO: finish
 
  * Install tinyMCE.
@@ -22,3 +23,8 @@ TODO: finish
 
  * Add BROWSER_IMAGE and BROWSER_FILE variables to settings.py.
 
+LICENSE
+-------
+Released under the MIT license (http://www.opensource.org/licenses/mit-license.php), see LICENSE file
+
+Copyright Jon Staley, 2011
