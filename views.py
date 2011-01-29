@@ -23,7 +23,7 @@ def browse(request, file_type):
         files_info.append((field.name, 
                            obj.title))
 
-    return render_to_response('imagebrowser/index.html', 
+    return render_to_response('filebrowser/index.html', 
                               {'files': files_info,
                                'type': file_type,
                                'title': '%s Browser' % file_type.capitalize()})
