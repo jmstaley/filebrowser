@@ -1,19 +1,16 @@
-import os
 from django.conf import settings
 from django.shortcuts import render_to_response
 from django.db.models import get_model
 
 def browse(request, file_type):
-    image_model, appname = settings.BROWSER_IMAGE
-    file_model, appname = settings.BROWSER_FILE
     files_info = []
 
     if file_type == 'image':
         model_name, appname = settings.BROWSER_IMAGE
-        fieldname = 'image'
+        fieldname = getattr(settings, 'BROWSER_IMAGE_FIELD', 'image')
     elif file_type == 'file':
         model_name, appname = settings.BROWSER_FILE
-        fieldname = 'document'
+        fieldname = getattr(settings, 'BROWSER_FILE_FIELD', 'document')
 
     model = get_model(appname, model_name)
 
